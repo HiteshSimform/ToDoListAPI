@@ -42,13 +42,21 @@ class Task(Base):
 
     __tablename__ = "tasks"
 
+    # id = Column(
+    #     UUID(as_uuid=True),
+    #     primary_key=True,
+    #     default=uuid.uuid4,
+    #     unique=True,
+    #     nullable=False,
+    #     doc="UUID primary key.",
+    # )
     id = Column(
-        UUID(as_uuid=True),
+        String(36),  # Store UUID as a string (length 36 for UUIDs in string format)
         primary_key=True,
-        default=uuid.uuid4,
+        default=lambda: str(uuid.uuid4()),  # Default UUID as string
         unique=True,
         nullable=False,
-        doc="UUID primary key.",
+        doc="UUID primary key as string.",
     )
     title = Column(String, index=True, nullable=False, doc="Title of the task.")
     description = Column(Text, nullable=True, doc="Optional detailed description.")
