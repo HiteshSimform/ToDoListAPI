@@ -7,13 +7,13 @@ from model.task import TaskStatusEnum
 
 class TaskBase(BaseModel):
     title: str = Field(..., examples="Task 1")
-    description : Optional[str] = None
+    description: Optional[str] = None
     due_date: Optional[date] = None
     status: Optional[TaskStatusEnum] = TaskStatusEnum.pending
     priority: Optional[int] = Field(default=3, ge=1, le=5)
 
     @field_validator("due_date", mode="before")
-    def validate_due_date(cls,v):
+    def validate_due_date(cls, v):
         if v and isinstance(v, date) and v < date.today():
             raise ValueError("Due date must be greater than current date")
         return v
