@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from db.db import create_all_tables
+# from .db.db import create_all_tables
 from model import task
 from db.base import Base
 from contextlib import asynccontextmanager
