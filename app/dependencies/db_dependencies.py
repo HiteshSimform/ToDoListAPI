@@ -1,24 +1,3 @@
-# from db.sessions import PostgresSessionLocal, SQLiteSessionLocal
-# from sqlalchemy.orm import Session
-# from typing import Generator
-
-
-# def get_postgres_session() -> Generator[Session, None, None]:
-#     db = PostgresSessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-
-
-# def get_sqlite_session() -> Generator[Session, None, None]:
-#     db = SQLiteSessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-
-
 from db.sessions import PostgresSessionLocal, SQLiteSessionLocal
 from sqlalchemy.orm import Session
 from typing import Generator

@@ -1,8 +1,9 @@
 from pydantic import BaseModel, Field, field_validator
-from datetime import datetime, date
+from datetime import date
 from typing import Optional
 from uuid import UUID
 from model.task import TaskStatusEnum
+from datetime import datetime
 
 
 class TaskBase(BaseModel):
@@ -13,17 +14,22 @@ class TaskBase(BaseModel):
     priority: Optional[int] = Field(default=3, ge=1, le=5)
 
     @field_validator("due_date", mode="before")
+    @classmethod
     def validate_due_date(cls, v):
-        if v and isinstance(v, date) and v < date.today():
-            raise ValueError("Due date must be greater than current date")
+        if v is None:
+            return v
+        if isinstance(v, str):
+            try:
+                v = datetime.strptime(v, "%Y-%m-%d").date()
+            except ValueError:
+                raise ValueError("Invalid date format. Expected YYYY-MM-DD.")
+        if v < date.today():
+            raise ValueError("Due date must be greater than or equal to today's date.")
         return v
-
-    class Config:
-        orm_mode = True
 
 
 class TaskCreate(TaskBase):
-    title: str
+    pass
 
 
 class TaskUpdate(BaseModel):
@@ -33,9 +39,14 @@ class TaskUpdate(BaseModel):
     status: Optional[TaskStatusEnum] = None
     priority: Optional[int] = None
 
+
+class TaskOut(BaseModel):
+    id: UUID
+    title: str
+    description: Optional[str]
+    due_date: Optional[date]
+    status: TaskStatusEnum
+    priority: int
+
     class Config:
-        orm_mode = True
-
-
-class TaskOut(TaskBase):
-    title: str = Field(..., example="Task 1")
+        from_attributes = True

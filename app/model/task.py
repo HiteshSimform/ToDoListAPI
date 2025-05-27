@@ -3,10 +3,8 @@ from sqlalchemy import Column, String, Text, Date, Enum, Boolean, DateTime, Inte
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 import enum
-from sqlalchemy.dialects.postgresql import UUID  # PostgreSQL specific
+from sqlalchemy.dialects.postgresql import UUID
 from db.base import Base
-
-# Base = declarative_base()
 
 
 class TaskStatusEnum(str, enum.Enum):
@@ -51,9 +49,9 @@ class Task(Base):
     #     doc="UUID primary key.",
     # )
     id = Column(
-        String(36),  # Store UUID as a string (length 36 for UUIDs in string format)
+        String(36),
         primary_key=True,
-        default=lambda: str(uuid.uuid4()),  # Default UUID as string
+        default=lambda: str(uuid.uuid4()),
         unique=True,
         nullable=False,
         doc="UUID primary key as string.",
@@ -80,46 +78,3 @@ class Task(Base):
 
     def __repr__(self):
         return f"<Task(id={self.id}, title={self.title}, status={self.status}, due_date={self.due_date})>"
-
-
-# from sqlalchemy import Column, Integer, String, Text, Date, Enum, Boolean, DateTime
-# from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy.sql import func
-# from sqlalchemy.orm import relationship
-# import enum
-# from typing import Optional
-
-# Base = declarative_base()
-
-
-# class TaskStatusEnum(str, enum.Enum):
-#     """
-#     TaskStatusEnum :
-#     """
-
-#     pending = "pending"
-#     completed = "completed"
-#     in_progress = "in_progress"
-
-
-# class Task(Base):
-#     """
-#     Task :
-#     """
-
-#     __tablename__ = "tasks"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     title = Column(String, index=True, nullable=False)
-#     description = Column(Text, nullable=True)
-#     due_date = Column(Date, nullable=True)
-#     status = Column(
-#         Enum(TaskStatusEnum), default=TaskStatusEnum.pending, nullable=False
-#     )
-#     priority = Column(Integer, default=3)
-#     created_at = Column(DateTime, server_default=func.now())
-#     updated_at = Column(DateTime, onupdate=func.now())
-#     is_deleted = Column(Boolean, default=False)
-
-#     def __repr__(self):
-#         return f"<Task(id={self.id}, title={self.title}, status={self.status}, due_date={self.due_date})>"
